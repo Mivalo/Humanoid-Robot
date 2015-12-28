@@ -1,3 +1,5 @@
 clear all; close all;
-[mass,symStates,symInput,gravity,kinematic,nodeSize] = create_structure();
-generate_dynamics(symStates,symInput,mass,gravity,kinematic,'mat2fun');
+global par 
+par = set_parameters();
+[symStates,symInput,kinematic] = create_structure();
+generate_dynamics(symStates,symInput,kinematic);

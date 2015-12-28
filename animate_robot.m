@@ -1,8 +1,6 @@
 function animate_robot(state,dimensions)
 
-stepSize = set_parameters('stepSize');
-posStraight = set_parameters('posStraight');
-posStraight2D = set_parameters('posStraight2D');
+global par
 
 figure(1)
 if dimensions == 3

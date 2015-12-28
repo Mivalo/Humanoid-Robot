@@ -1,8 +1,8 @@
 function stateDerivative = compute_acceleration(state, input, forceExt)
-    par = set_parameters();
+    global par
     velocity = state(1:length(state)/2);
-    M = mass_matrix(state);
-    C = coriolis_matrix(state);
-    G = gravity_matrix(state);
+    con = conv_matrix(state);
     J = jacobian_matrix(state);
-    stateDerivative = [M\(-C*velocity+G+input+J.'*forceExt); velocity];
+    M = J'*par.mass*J;
+    f = J'*(par.fz - M*con*velocity);
+    stateDerivative = [M\f; velocity];

@@ -14,12 +14,10 @@ function parOut = set_parameters(name)
     par.inertia = par.mass.*par.radius.^2/12;
     par.friction = 0.5;
     par.gravity = 9.81;
-    par.com = [par.radius(1)    0               0                   0               0               0               0;
-               0                0               0                   par.radius(4)   0               0               par.radius(7);
+    par.dim = [par.radius(1)    0               0                   0               0               0               0;
+               0                0               0                   par.radius(4)   0               0               par.radius(5);
                0                -par.radius(2)  -par.radius(3)      0               -par.radius(5)  -par.radius(6)  0];
-    par.joint = [par.length(1)    0               0                   0               0               0               0;
-               0                0               0                   par.length(4)   0               0               par.length(7);
-               0                -par.length(2)  -par.length(3)      0               -par.length(5)  -par.length(6)  0];
+    par.joint = 
     par.stepSize = 0.05;
     par.Qlqr = 5;
     par.Rlqr = 1;

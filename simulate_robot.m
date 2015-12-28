@@ -1,6 +1,8 @@
-    stateN = nodeSize.state;
-    extN = nodeSize.ext;
-    inputN = nodeSize.input;
+global par
+
+stateN = par.nodeSize.state;
+    extN = par.nodeSize.ext;
+    inputN = par.nodeSize.input;
     
 
 stepSize = set_parameters('stepSize');
