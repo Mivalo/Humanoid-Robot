@@ -1,6 +1,7 @@
 function generate_dynamics(symStates,symInput,kinematic)
     display('- Generating dynamic matrices');
     tic
+    global par
     q = symStates.pos;
     qd = symStates.vel;
     gq = kinematic;
@@ -13,17 +14,12 @@ function generate_dynamics(symStates,symInput,kinematic)
         end
     end
 
-    syms t
     J_q = jacobian(gq,q);
-    
-    con = sym('c',[length(kinematic),length(q)]);    
-    for i = 1:length(q)
-        con(:,i) = jacobian(J_q(:,i),q)*qd;
-    end
-   
     state = [qd; q];
-    display('- Creating functions');
-    matlabFunction(con,'File','convect_matrix','Vars',{state},'Optimize',false);
-    matlabFunction(J_q,'File','jacobian_matrix','Vars',{state},'Optimize',false);    
+    for i = 1:length(q)
+        con = jacobian(J_q(:,i),q);  
+        matlabFunction(con,'File',['generated/convective/getDoubleJ',par.symNames{i}],'Vars',{state},'Optimize',false,'Sparse',true);
+    end
+    matlabFunction(J_q,'File','generated/getJacobian','Vars',{state},'Optimize',false);    
     toc
 end

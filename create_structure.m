@@ -34,15 +34,15 @@ rR{3} = [q(13:14); 0];
 rootPos = q(1:3);
 rootRot = rot(rRoot);
 
-comR = cell(4);
-comL = cell(4);
-rotR = cell(4);
-rotL = cell(4);
-jR = cell(4);
-jL = cell(4);
+comR = cell(4,1);
+comL = cell(4,1);
+rotR = cell(4,1);
+rotL = cell(4,1);
+jR = cell(4,1);
+jL = cell(4,1);
 
-rotR{1} = rot(rR{1})* rot(rRoot);
-rotL{1} = rot(rL{1})* rot(rRoot);
+rotR{1} = rot(rRoot);
+rotL{1} = rot(rRoot);
 jR{1} = rootPos + rootRot*par.com(:,1);
 jL{1} = rootPos - rootRot*par.com(:,1);
 
@@ -55,6 +55,17 @@ for i = 1:3
     jR{i+1} = jR{i} + rotR{i+1}*par.joint(:,i+1);
 end
 
+animatic = [rootPos;
+    jL{1};
+    jL{2};
+    jL{3};
+    jR{1};
+    jR{2};
+    jR{3}];
+
+    matlabFunction(animatic,'File','generated/getJointPosition','Vars',{q},'Optimize',false);
+    
+    
 kinematic = [ rootPos;
     rRoot;
     comL{1};

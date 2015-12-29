@@ -1,4 +1,0 @@
-clear all; close all;
-[mass,symStates,symInput,gravity,kinematic
-    ] = create_structure_2D();
-generate_dynamics(symStates,symInput,mass,gravity,kinematic,'mat2fun');
