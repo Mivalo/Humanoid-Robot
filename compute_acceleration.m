@@ -1,6 +1,13 @@
-function stateDerivative = compute_acceleration(state, input, forceExt)
-    global par
+function stateDerivative = compute_acceleration(t, state)
+%     t
+
+%     state = respectConstVel(state);
     velocity = state(1:length(state)/2);
+    global par
+    forceExt = zeros(length(par.fz),1);
+    
+    forceExt = forceExt + computeContacts(state);
+ 
     con = zeros(length(forceExt),length(velocity));
     for i = 1:length(velocity)
         evalString = ['getDoubleJ',par.symNames{i},'(state)'];
@@ -11,6 +18,11 @@ function stateDerivative = compute_acceleration(state, input, forceExt)
         con(:,i) = doubleJac*velocity;
     end
     J = getJacobian(state);
-    M = J'*par.mass*J;
-    f = J'*( - par.mass*con*velocity);
+    
+    M = J'*par.M*J;
+    
+    fw = computeFriction(state);
+
+    f = fw + J'*(par.fz' + forceExt - par.M*con*velocity);
+    
     stateDerivative = [M\f; velocity];

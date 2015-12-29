@@ -22,6 +22,8 @@ for j = 1:length(q)
     syms(symdd);
 end
 
+    state = [qd; q];
+
 %%
 rRoot = q(4:6);
 rL{1} = q(10:12);
@@ -59,12 +61,23 @@ animatic = [rootPos;
     jL{1};
     jL{2};
     jL{3};
+    jL{4};
     jR{1};
     jR{2};
-    jR{3}];
+    jR{3};
+    jR{4}];
 
-    matlabFunction(animatic,'File','generated/getJointPosition','Vars',{q},'Optimize',false);
-    
+contacts = [
+    jL{3};
+    jL{4};
+    jR{3};
+    jR{4}];
+
+matlabFunction(animatic,'File','generated/getJointPosition','Vars',{state},'Optimize',false);
+matlabFunction(contacts,'File','generated/getContactPosition','Vars',{state},'Optimize',false);   
+
+contactJac = jacobian(contacts,q);
+matlabFunction(contactJac,'File','generated/getContactJacobian','Vars',{state},'Optimize',false);  
     
 kinematic = [ rootPos;
     rRoot;
@@ -89,7 +102,7 @@ for i = 1:par.bodyparts
 end
 
 %%
-par.mass = diag(Mvec);
+par.M = diag(Mvec);
 par.fz = fz;
 symStates.pos = q;
 symStates.vel = qd;

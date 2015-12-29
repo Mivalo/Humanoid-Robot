@@ -1,14 +1,21 @@
-function stateNew = runge_kutta(stateOld, input, forceExt)
+function [t, stateArray] = runge_kutta(tspan,state)
 
 h = set_parameters('stepSize');
+t = [tspan(1):h:tspan(2)]';
 
-k1 = compute_acceleration(stateOld, input, forceExt);
-k2 = compute_acceleration(stateOld + k1*h/2, input, forceExt);
-k3 = compute_acceleration(stateOld + k2*h/2, input, forceExt);
-k4 = compute_acceleration(stateOld + k3*h, input, forceExt);
+stateArray = zeros(length(t),length(state));
 
-stateNew = stateOld + (k1 + 2*k2 + 2*k3 + k4)*h/6;
+for i = 1:length(t)
 
-if isnan(max(stateNew))
-    error('One of the states is gone to Inf or NaN')
+    k1 = compute_acceleration(t,state);
+    k2 = compute_acceleration(t,state + k1*h/2);
+    k3 = compute_acceleration(t,state + k2*h/2);
+    k4 = compute_acceleration(t,state + k3*h);
+
+    state = state + (k1 + 2*k2 + 2*k3 + k4)*h/6;
+    state = respectConstraint(state);
+    if isnan(max(state))
+        error('One of the states is gone to Inf or NaN')
+    end
+    stateArray(i,:) = state';
 end
