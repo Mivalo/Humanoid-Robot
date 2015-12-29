@@ -1,5 +1,4 @@
 function animate_robot(dt,state)
-tic
 global par
 
 plotOpts.LineWidth = 1;

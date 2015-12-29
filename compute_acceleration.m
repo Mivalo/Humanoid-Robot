@@ -1,12 +1,16 @@
-function stateDerivative = compute_acceleration(t, state)
+function stateDerivative = compute_acceleration(t, state,torque)
+    global par
 %     t
-
+    u = zeros(length(par.symNames),1);
+    if nargin == 3
+        u(7:end) = torque;
+    else
+        u(7:end) = computeTorque(state);
+    end
 %     state = respectConstVel(state);
     velocity = state(1:length(state)/2);
-    global par
-    forceExt = zeros(length(par.fz),1);
-    
-    forceExt = forceExt + computeContacts(state);
+
+    forceExt = computeContacts(state);
  
     con = zeros(length(forceExt),length(velocity));
     for i = 1:length(velocity)
@@ -23,6 +27,6 @@ function stateDerivative = compute_acceleration(t, state)
     
     fw = computeFriction(state);
 
-    f = fw + J'*(par.fz' + forceExt - par.M*con*velocity);
+    f = u + fw + J'*(par.fz' + forceExt - par.M*con*velocity);
     
     stateDerivative = [M\f; velocity];

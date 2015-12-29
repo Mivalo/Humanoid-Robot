@@ -7,8 +7,8 @@ function parOut = set_parameters(name)
                 'anklePR', 'ankleRR', 'kneeR', 'hipPR', 'hipRR', 'hipJR'};
     par.bodyparts = 7; 
     
-    par.mass = [2 0.5 0.5 0.1 0.5 0.5 0.1];
-    par.length = [0.3 0.3 0.3 0.06 0.3 0.3 0.06];
+    par.mass = [3 0.5 0.5 0.1 0.5 0.5 0.1];
+    par.length = [0.3 0.3 0.3 0.1 0.3 0.3 0.1];
     par.dist = par.length/2;
     par.radius = par.length/2;
     par.inertia = par.mass.*par.radius.^2/12;
@@ -23,13 +23,20 @@ function parOut = set_parameters(name)
                0                0               0                   par.length(4)   0               0               par.length(7);
                0                -par.length(2)  -par.length(3)      0               -par.length(5)  -par.length(6)  0];
     par.stepSize = 0.01;
-    par.Qlqr = 5;
-    par.Rlqr = 1;
     par.captureBound = 0.1;
     
     par.contactStiffness = 10000;
     par.contactDamping = 10;
     par.contactFriction = [1; 1; 0];
+    
+    par.linearDiff = 0.01;
+    par.linSI = [7 8 9 10 11 12 13 14 15 16 17 18];
+    par.linTI = [1 2 3 4 5 6 7 8 9 10 11 12];
+    
+    par.Qlqr = 1*[0*eye(length(par.linSI)) zeros(length(par.linSI));
+                zeros(length(par.linSI)) 100*eye(length(par.linSI))];
+    par.Rlqr = 1000*eye(length(par.linTI));
+    par.Klqr = [];
     
     if nargin <= 0;
         parOut = par;
