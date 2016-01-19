@@ -93,16 +93,29 @@ kinematic = [ rootPos;
     rR{2};
     comR{3};
     rR{3}];
+
+com = [ rootPos;
+    comL{1};
+    comL{2};
+    comL{3};
+    comR{1};
+    comR{2};
+    comR{3}];
+
+matlabFunction(com,'File','generated/getComPosition','Vars',{state},'Optimize',false);   
    
 Mvec = zeros(par.bodyparts*6,1);
+massVec = zeros(par.bodyparts*3,1);
 fz = zeros(1,par.bodyparts*6);
 for i = 1:par.bodyparts
+    massVec((i-1)*3+[1:3]) = [par.mass(i) par.mass(i) par.mass(i)];
     Mvec((i-1)*6+[1:6]) = [par.mass(i) par.mass(i) par.mass(i) par.inertia(i) par.inertia(i) par.inertia(i)];
     fz((i-1)*6 + 3) = -par.mass(i)*par.gravity;
 end
 
 %%
 par.M = diag(Mvec);
+par.massVec = diag(massVec);
 par.fz = fz;
 symStates.pos = q;
 symStates.vel = qd;

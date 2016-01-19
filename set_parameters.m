@@ -30,8 +30,11 @@ function parOut = set_parameters(name)
     par.contactFriction = [1; 1; 0];
     
     par.linearDiff = 0.01;
-    par.linSI = [7 8 9 10 11 12 13 14 15 16 17 18];
-    par.linTI = [1 2 3 4 5 6 7 8 9 10 11 12];
+%     par.linSI = [7 8 9 10 11 12 13 14 15 16 17 18];
+%     par.linTI = [1 2 3 4 5 6 7 8 9 10 11 12];
+    
+    par.linSI = [7 9 10 13 15 16];
+    par.linTI = [1 3 4 7 9 10];
     
     par.Qlqr = 1*[0*eye(length(par.linSI)) zeros(length(par.linSI));
                 zeros(length(par.linSI)) 100*eye(length(par.linSI))];

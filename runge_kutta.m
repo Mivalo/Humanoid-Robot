@@ -21,5 +21,6 @@ for i = 1:length(t)-1
         return;
     end
     stateArray(i,:) = state';
+    comput
     animate_robot(h, state);
 end
