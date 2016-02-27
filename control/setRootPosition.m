@@ -1,0 +1,1 @@
+function posNew = setRootPosition(posOld)

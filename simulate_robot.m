@@ -17,8 +17,13 @@ forceExt = zeros(extN,1);
 
 [A,B] = linearize_system(state);
 par.Klqr = lqr(A,B,par.Qlqr,par.Rlqr);
+
+global status
+status.primary = 0;
+status.secondary = 0;
+status.desired = state;
 %%
-odeOptions = odeset('RelTol',1e-2,'AbsTol',1e-4,'Events',@unstable);
+% odeOptions = odeset('RelTol',1e-2,'AbsTol',1e-4,'Events',@unstable);
 % [t, state] = ode45(@compute_acceleration,tspan,state,odeOptions);
 [t, state] = runge_kutta(tspan,state);
 

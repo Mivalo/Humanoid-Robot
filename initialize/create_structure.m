@@ -102,7 +102,21 @@ com = [ rootPos;
     comR{2};
     comR{3}];
 
-matlabFunction(com,'File','generated/getComPosition','Vars',{state},'Optimize',false);   
+commass = zeros(3,3*length(par.mass));
+for i = 1:length(par.mass)
+    commass(:,(i-1)*3 + [1:3]) = par.mass(i)*eye(3);
+end
+    
+com_total = commass*com/sum(par.mass);
+
+balanceNodes = [rootPos; comL{3}; comR{3}];
+
+balanceJac = jacobian(balanceNodes, q);
+
+matlabFunction(com,'File','generated/getComPosition','Vars',{state},'Optimize',false);  
+
+matlabFunction(balanceNodes,'File','generated/getBalancePosition','Vars',{state},'Optimize',false); 
+matlabFunction(balanceJac,'File','generated/getBalanceJacobian','Vars',{state},'Optimize',false);  
    
 Mvec = zeros(par.bodyparts*6,1);
 massVec = zeros(par.bodyparts*3,1);
