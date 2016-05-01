@@ -6,7 +6,7 @@ function parOut = set_parameters(name)
     par.symNamesu = {'anklePL', 'ankleRL', 'kneeL', 'hipPL', 'hipRL', 'hipJL',...
                 'anklePR', 'ankleRR', 'kneeR', 'hipPR', 'hipRR', 'hipJR'};
     par.bodyparts = 7; 
-    
+    par.cFriction = 0;
     par.mass = [3 0.5 0.5 0.1 0.5 0.5 0.1];
     par.length = [0.3 0.3 0.3 0.1 0.3 0.3 0.1];
     par.dist = par.length/2;

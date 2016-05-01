@@ -1,7 +1,7 @@
 function tau = computeTorque(state)
 global par
 
-stateDesired = setDesiredConfig(state);
+stateDesired = zeros(length(state),1);
 
 stateDiff = stateDesired - state;
 tau = zeros(length(par.symNamesu),1);
